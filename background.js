@@ -22,10 +22,13 @@ async function enableFocusMode(durationInMinutes) {
   const rule = {
     id: RULE_ID,
     priority: 1,
-    action: { type: 'block' },
+    action: { 
+      type: 'redirect',
+      redirect: { extensionPath: '/blocked/blocked.html' }
+    },
     condition: {
       urlFilter: '*',
-      resourceTypes: ['main_frame', 'sub_frame'],
+      resourceTypes: ['main_frame'],
       excludedRequestDomains: validDomains
     }
   };

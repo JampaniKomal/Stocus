@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Blocked by Stocus</title>
+  <link rel="stylesheet" href="blocked.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="illustration">
+      <svg viewBox="0 0 24 24" width="80" height="80" stroke="var(--primary-color)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+    </div>
+    
+    <h1>Focus Mode Active</h1>
+    <p class="message">This site is a distraction. Get back to what matters.</p>
+    
+    <div class="timer-container">
+      <p class="timer-label">Time remaining in your focus session:</p>
+      <div id="timerDisplay" class="timer">--:--</div>
+    </div>
+    
+    <button id="closeBtn" class="btn btn-primary">Close Tab</button>
+  </div>
+  <script src="blocked.js"></script>
+</body>
+</html>
