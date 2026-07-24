@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Stocus",
+  "version": "1.0.0",
+  "description": "A mindful Chrome extension to help you focus by blocking distracting websites.",
+  "permissions": [
+    "storage",
+    "alarms",
+    "declarativeNetRequest"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Stocus"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  }
+}
