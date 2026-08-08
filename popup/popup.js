@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let intervalId = null;
 
-  // Load custom time setting
-  const data = await chrome.storage.local.get(['isFocusing', 'endTime', 'customTime']);
+  // Load custom time and strict mode setting
+  const data = await chrome.storage.local.get(['isFocusing', 'endTime', 'customTime', 'strictMode', 'muteSounds']);
   if (data.customTime) {
     timeInput.value = data.customTime;
     updateDisplayFromInput();
@@ -48,28 +48,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (remaining > 0) {
           timerDisplay.textContent = formatTime(remaining);
         } else {
-          // Timer finished
           setUIState(false);
         }
       }
     });
   }
 
-  function setUIState(isFocusing) {
+  function setUIState(isFocusing, strictMode = false) {
     if (isFocusing) {
       timeInputGroup.style.display = 'none';
-      actionBtn.textContent = 'Stop Focus';
-      actionBtn.className = 'btn btn-danger';
-      statusText.textContent = 'Stay focused. Distractions are blocked.';
+      if (strictMode) {
+        actionBtn.style.display = 'none';
+        statusText.textContent = 'Strict Mode active. No stopping early.';
+      } else {
+        actionBtn.style.display = 'block';
+        actionBtn.textContent = 'Stop Focus';
+        actionBtn.className = 'btn btn-danger';
+        statusText.textContent = 'Stay focused. Distractions are blocked.';
+      }
       statusText.style.color = 'var(--primary-color)';
       
-      // Update timer every second
       updateTimer();
-      if (!intervalId) {
-        intervalId = setInterval(updateTimer, 1000);
-      }
+      if (!intervalId) intervalId = setInterval(updateTimer, 1000);
     } else {
       timeInputGroup.style.display = 'flex';
+      actionBtn.style.display = 'block';
       actionBtn.textContent = 'Start Focus';
       actionBtn.className = 'btn btn-primary';
       statusText.textContent = 'Ready to focus.';
@@ -83,23 +86,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Initial state check
-  setUIState(data.isFocusing);
+  setUIState(data.isFocusing, data.strictMode);
 
-  actionBtn.addEventListener('click', () => {
-    chrome.storage.local.get(['isFocusing'], (currentData) => {
-      if (currentData.isFocusing) {
-        // Stop timer
-        chrome.runtime.sendMessage({ action: 'stopFocus' }, () => {
-          setUIState(false);
-        });
-      } else {
-        // Start timer
-        const duration = parseInt(timeInput.value, 10) || 15;
-        chrome.runtime.sendMessage({ action: 'startFocus', duration: duration }, () => {
-          setUIState(true);
-        });
-      }
-    });
+  function playStartSound() {
+    if (data.muteSounds) return;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+    
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.3);
+  }
+
+  actionBtn.addEventListener('click', async () => {
+    const currentData = await chrome.storage.local.get(['isFocusing', 'strictMode']);
+    if (currentData.isFocusing) {
+      // Stop timer
+      chrome.runtime.sendMessage({ action: 'stopFocus' }, () => {
+        setUIState(false);
+      });
+    } else {
+      // Start timer
+      playStartSound();
+      const duration = parseInt(timeInput.value, 10) || 15;
+      chrome.runtime.sendMessage({ action: 'startFocus', duration: duration }, () => {
+        setUIState(true, currentData.strictMode);
+      });
+    }
   });
 });

@@ -5,28 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stocus Settings</title>
   <link rel="stylesheet" href="options.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Stocus Settings</h1>
-      <p class="subtitle">Configure your allowed domains during focus mode.</p>
+      <h1>Stocus</h1>
+      <p class="subtitle">Mindful productivity settings</p>
     </header>
 
+    <div class="tabs">
+      <button class="tab-btn active" data-target="settingsTab">Settings</button>
+      <button class="tab-btn" data-target="historyTab">History & Stats</button>
+    </div>
+
     <main>
-      <section class="card">
-        <h2>Allowed Sites (Whitelist)</h2>
-        <p class="help-text">During a focus session, <strong>ALL</strong> websites will be blocked except the ones listed below.</p>
-        
-        <div class="input-group">
-          <input type="text" id="domainInput" placeholder="e.g. coursera.org, github.com">
-          <button id="addBtn" class="btn btn-primary">Add Site</button>
+      <!-- Settings Tab -->
+      <section id="settingsTab" class="tab-content active">
+        <div class="card">
+          <h2>Allowed Sites (Whitelist)</h2>
+          <p class="help-text">During a focus session, <strong>ALL</strong> websites will be blocked except the ones listed below.</p>
+          
+          <div class="input-group">
+            <input type="text" id="domainInput" placeholder="e.g. coursera.org, github.com">
+            <button id="addBtn" class="btn btn-primary">Add Site</button>
+          </div>
+  
+          <ul id="domainList" class="domain-list">
+            <!-- Populated by JS -->
+          </ul>
         </div>
 
-        <ul id="domainList" class="domain-list">
-          <!-- Populated by JS -->
-        </ul>
+        <div class="card mt-4">
+          <h2>Preferences</h2>
+          
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h3>Strict Mode</h3>
+              <p>Disable the "Stop Focus" button during a session.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="strictModeToggle">
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h3>Mute Sounds</h3>
+              <p>Disable timer start and end chimes.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="muteSoundsToggle">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- History Tab -->
+      <section id="historyTab" class="tab-content">
+        <div class="stats-overview">
+          <div class="stat-box">
+            <h3 id="totalSessions">0</h3>
+            <p>Total Sessions</p>
+          </div>
+          <div class="stat-box">
+            <h3 id="totalMinutes">0</h3>
+            <p>Minutes Focused</p>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <h2>Recent Sessions</h2>
+          <div class="history-list" id="historyList">
+            <!-- Populated by JS -->
+          </div>
+        </div>
       </section>
     </main>
   </div>
