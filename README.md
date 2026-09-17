@@ -21,11 +21,17 @@ Stocus is a mindful Chrome extension designed to help you focus by temporarily b
 4. Close the settings, open the popup again, set your desired focus time, and click **Start Focus**.
 5. Try visiting a non-allowed site—it will be blocked until the timer runs out or you manually stop it!
 
+## Testing
+The background service worker's core logic (whitelist domain normalization,
+focus session start/stop, history logging, alarm handling) is covered by a
+small test suite that loads `background.js` into a sandboxed context with a
+mocked `chrome` API and exercises it with real inputs. Run it with:
+```
+npm test
+```
+
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-This project was built with the assistance of an AI coding agent (Antigravity by Google Deepmind).

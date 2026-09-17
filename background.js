@@ -41,7 +41,7 @@ async function enableFocusMode(durationInMinutes) {
   const data = await chrome.storage.local.get(['whitelist']);
   const whitelist = data.whitelist || ['coursera.org'];
   
-  const validDomains = whitelist.map(d => d.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0]).filter(Boolean);
+  const validDomains = whitelist.map(d => d.toLowerCase().replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0]).filter(Boolean);
   
   const rule = {
     id: RULE_ID,
@@ -97,9 +97,9 @@ async function disableFocusMode(completed = false) {
   chrome.alarms.clear('focusTimer');
 }
 
-chrome.alarms.onAlarm.addListener((alarm) => {
+chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === 'focusTimer') {
-    disableFocusMode(true);
+    await disableFocusMode(true);
   }
 });
 

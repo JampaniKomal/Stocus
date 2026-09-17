@@ -1,0 +1,10 @@
+{
+  "name": "stocus",
+  "version": "1.0.0",
+  "description": "A mindful Chrome extension to help you focus by blocking distracting websites.",
+  "private": true,
+  "scripts": {
+    "test": "node tests/background.test.js"
+  },
+  "license": "MIT"
+}

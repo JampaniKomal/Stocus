@@ -10,4 +10,4 @@ The following versions of Stocus are currently being supported with security upd
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within Stocus, please do not create a public issue. Instead, please send an e-mail to the maintainers directly. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Stocus, please do not create a public issue. Instead, please send an e-mail to jampanikomal2005@gmail.com. All security vulnerabilities will be promptly addressed.
