@@ -29,6 +29,8 @@ mocked `chrome` API and exercises it with real inputs. Run it with:
 ```
 npm test
 ```
+These tests run on every push via [GitHub Actions](.github/workflows/ci.yml)
+(Node 18/20/22), which also validates that `manifest.json` is well-formed.
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
